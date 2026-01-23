@@ -23,7 +23,26 @@ Each problem directory contains:
 
 ## 🚀 Getting Started
 
-### Running Tests
+### Using Makefile
+
+```bash
+# Run all tests
+make test
+
+# Run tests with verbose output
+make test-v
+
+# Generate coverage report
+make test-cover
+
+# Format code
+make fmt
+
+# Create new problem from template
+make new NUM=0042 NAME=trapping-rain-water
+```
+
+### Running Tests Directly
 
 ```bash
 # Run tests for a specific problem
@@ -49,13 +68,17 @@ func function(arg string) string {
 
 ## 🧪 Testing Utilities
 
-The `kit` package provides a generic assertion helper:
+The `kit` package provides assertion helpers:
 
 ```go
-kit.AssertEqual(t, got, want)
+kit.AssertEqual(t, got, want)     // Deep equality check
+kit.AssertTrue(t, condition)       // Check condition is true
+kit.AssertFalse(t, condition)      // Check condition is false
+kit.AssertNil(t, value)            // Check value is nil
+kit.AssertNotNil(t, value)         // Check value is not nil
 ```
 
-This helper uses `reflect.DeepEqual` for flexible comparison and provides clear error messages.
+All helpers use `t.Helper()` for clear error messages pointing to test cases.
 
 ## 📄 License
 
