@@ -1,3 +1,5 @@
+//go:build ignore
+
 package template
 
 import (
@@ -25,5 +27,14 @@ func Test(t *testing.T) {
 
 			kit.AssertEqual(t, got, tc.want)
 		})
+	}
+}
+
+// Benchmark example - rename to match your function
+func BenchmarkFunction(b *testing.B) {
+	arg := "test input"
+
+	for b.Loop() {
+		function(arg)
 	}
 }
