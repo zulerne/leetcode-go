@@ -63,9 +63,12 @@ new:
 	@mkdir -p problems/$(PKG)
 	@cp problems/0000-template/solution.go problems/$(PKG)/
 	@cp problems/0000-template/solution_test.go problems/$(PKG)/
-	@sed -i '' 's/\/\/go:build ignore//' problems/$(PKG)/solution.go
-	@sed -i '' 's/\/\/go:build ignore//' problems/$(PKG)/solution_test.go
+	@PKG_NAME=$$(echo "$(PKG)" | sed 's/^[0-9]*-//' | tr -d '-'); \
+	 SLUG=$$(echo "$(PKG)" | sed 's/^[0-9]*-//'); \
+	 URL="https://leetcode.com/problems/$$SLUG/description/"; \
+	 sed -i '' "/^\/\/go:build ignore$$/{N;/\n$$/d;}; s|package template|package $$PKG_NAME|; s|{url}|$$URL|" problems/$(PKG)/solution.go; \
+	 sed -i '' "/^\/\/go:build ignore$$/{N;/\n$$/d;}; s|package template|package $$PKG_NAME|" problems/$(PKG)/solution_test.go
 	@echo "Created: problems/$(PKG)/"
-	@echo "Run: make run PKG=$(PKG)"
+	@echo "Run: make run-v PKG=$(PKG)"
 
 
