@@ -1,0 +1,94 @@
+version: '3'
+
+tasks:
+  default:
+    desc: List all available tasks
+    silent: true
+    cmds:
+      - task --list
+
+  # ============================================
+  # SINGLE PROBLEM
+  # ============================================
+
+  run:
+    desc: "Run tests  (task run -- 0001-two-sum)"
+    vars:
+      PKG: '{{.PKG | default .CLI_ARGS}}'
+    preconditions:
+      - sh: '[ -n "{{.PKG}}" ]'
+        msg: "Usage: task run -- 0001-two-sum"
+    cmds:
+      - go test ./problems/{{.PKG}}
+
+  run-v:
+    desc: "Run tests verbose  (task run-v -- 0001-two-sum)"
+    vars:
+      PKG: '{{.PKG | default .CLI_ARGS}}'
+    preconditions:
+      - sh: '[ -n "{{.PKG}}" ]'
+        msg: "Usage: task run-v -- 0001-two-sum"
+    cmds:
+      - go test -v ./problems/{{.PKG}}
+
+  bench:
+    desc: "Run benchmarks  (task bench -- 0001-two-sum)"
+    vars:
+      PKG: '{{.PKG | default .CLI_ARGS}}'
+    preconditions:
+      - sh: '[ -n "{{.PKG}}" ]'
+        msg: "Usage: task bench -- 0001-two-sum"
+    cmds:
+      - go test -bench=. -benchmem ./problems/{{.PKG}}
+
+  # ============================================
+  # ALL PROBLEMS
+  # ============================================
+
+  test:
+    desc: Run all tests with race detector
+    cmds:
+      - go test -race ./...
+
+  cover:
+    desc: Run tests with HTML coverage report (opens in browser)
+    cmds:
+      - go test -coverprofile=coverage.out ./...
+      - go tool cover -html=coverage.out -o coverage.html
+      - open coverage.html
+
+  lint:
+    desc: Run golangci-lint
+    cmds:
+      - golangci-lint run
+
+  # ============================================
+  # UTILITIES
+  # ============================================
+
+  fmt:
+    desc: Format all code
+    cmds:
+      - go fmt ./...
+
+  new:
+    desc: "Scaffold a new problem  (task new -- 0042-trapping-rain-water)"
+    vars:
+      PKG: '{{.PKG | default .CLI_ARGS}}'
+      PKG_NAME:
+        sh: echo '{{.PKG | default .CLI_ARGS}}' | sed 's/^[0-9]*-//' | tr -d '-'
+      SLUG:
+        sh: echo '{{.PKG | default .CLI_ARGS}}' | sed 's/^[0-9]*-//'
+    preconditions:
+      - sh: '[ -n "{{.PKG}}" ]'
+        msg: "Usage: task new -- 0042-trapping-rain-water"
+    cmds:
+      - mkdir -p problems/{{.PKG}}
+      - cp problems/0000-template/solution.go problems/{{.PKG}}/solution.go
+      - cp problems/0000-template/solution_test.go problems/{{.PKG}}/solution_test.go
+      - |
+        sed -i '' '/^\/\/go:build ignore$/{N;/\n$/d;}; s|package template|package {{.PKG_NAME}}|; s|{url}|https://leetcode.com/problems/{{.SLUG}}/description/|' problems/{{.PKG}}/solution.go
+      - |
+        sed -i '' '/^\/\/go:build ignore$/{N;/\n$/d;}; s|package template|package {{.PKG_NAME}}|' problems/{{.PKG}}/solution_test.go
+      - "printf 'Created: problems/{{.PKG}}/\\n'"
+      - "printf 'Run: task run-v -- {{.PKG}}\\n'"

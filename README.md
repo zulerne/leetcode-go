@@ -4,16 +4,16 @@
 
 ```bash
 # Scaffold a new problem
-make new PKG=0042-trapping-rain-water
+task new -- 0042-trapping-rain-water
 
 # Run tests
-make run-v PKG=0042-trapping-rain-water
+task run-v -- 0042-trapping-rain-water
 
 # Benchmark
-make bench PKG=0042-trapping-rain-water
+task bench -- 0042-trapping-rain-water
 
 # Format code
-make fmt
+task fmt
 ```
 
 ## Structure
@@ -39,4 +39,4 @@ kit.AssertNotNil(t, value)
 
 ## Adding a new problem
 
-`make new PKG=0009-palindrome-number` scaffolds both files with the correct package name and LeetCode URL. Just write the function signature and tests.
+`task new -- 0009-palindrome-number` scaffolds both files with the correct package name and LeetCode URL. Just write the function signature and tests.
