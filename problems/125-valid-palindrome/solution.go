@@ -3,12 +3,12 @@
 package validpalindrome
 
 func isAlphanumeric(b byte) bool {
-	return (b >= 48 && b <= 57) || (b >= 65 && b <= 90) || (b >= 97 && b <= 122)
+	return (b >= '0' && b <= '9') || (b >= 'a' && b <= 'z') || (b >= 'A' && b <= 'Z')
 }
 
 func toLower(b byte) byte {
-	if b >= 65 && b <= 90 {
-		return b + 32
+	if b >= 'A' && b <= 'Z' {
+		return b + ('a' - 'A')
 	}
 	return b
 }
