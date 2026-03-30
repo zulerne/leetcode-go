@@ -23,7 +23,7 @@ func diagonalSum(mat [][]int) int {
 	for i := range len {
 		sum += mat[i][i] + mat[i][len-1-i]
 	}
-	if len%2 == 1 {
+	if len%2 != 0 {
 		sum -= mat[len/2][len/2]
 	}
 	return sum
