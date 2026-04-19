@@ -29,12 +29,3 @@ func Test(t *testing.T) {
 		})
 	}
 }
-
-// Benchmark example - rename to match your function
-func BenchmarkFunction(b *testing.B) {
-	arg := "test input"
-
-	for b.Loop() {
-		function(arg)
-	}
-}
