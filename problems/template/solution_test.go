@@ -29,3 +29,9 @@ func Test(t *testing.T) {
 		})
 	}
 }
+
+// func Benchmark(b *testing.B) {
+// 	for b.Loop() {
+// 		function("arg")
+// 	}
+// }
