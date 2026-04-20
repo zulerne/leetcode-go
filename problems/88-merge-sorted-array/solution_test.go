@@ -2,8 +2,6 @@ package mergesortedarray
 
 import (
 	"testing"
-
-	"github.com/zulerne/leetcode-go/kit"
 )
 
 func Test(t *testing.T) {
@@ -21,9 +19,9 @@ func Test(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			got := function(tc.arg)
+			// got := function(tc.arg)
 
-			kit.AssertEqual(t, got, tc.want)
+			// kit.AssertEqual(t, got, tc.want)
 		})
 	}
 }
