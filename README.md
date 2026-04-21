@@ -3,8 +3,8 @@
 ## Workflow
 
 ```bash
-# Scaffold a new problem
-task new -- 0042-trapping-rain-water
+# Scaffold a new problem (number is auto-padded: 42 → 0042)
+task new -- 42-trapping-rain-water
 
 # Run tests
 task run-v -- 0042-trapping-rain-water
@@ -39,4 +39,4 @@ kit.AssertNotNil(t, value)
 
 ## Adding a new problem
 
-`task new -- 0009-palindrome-number` scaffolds both files with the correct package name and LeetCode URL. Just write the function signature and tests.
+`task new -- 9-palindrome-number` scaffolds both files with the correct package name and LeetCode URL (auto-pads to `0009-palindrome-number`). Just write the function signature and tests.
