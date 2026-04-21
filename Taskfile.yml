@@ -8,22 +8,22 @@ tasks:
       - task --list
 
   run-v:
-    desc: "Run tests verbose  (task run-v -- 1-two-sum)"
+    desc: "Run tests verbose  (task run-v -- 0001-two-sum)"
     vars:
       PKG: '{{.PKG | default .CLI_ARGS}}'
     preconditions:
       - sh: '[ -n "{{.PKG}}" ]'
-        msg: "Usage: task run-v -- 1-two-sum"
+        msg: "Usage: task run-v -- 0001-two-sum"
     cmds:
       - go test -v ./problems/{{.PKG}}
 
   bench:
-    desc: "Run benchmarks  (task bench -- 1-two-sum)"
+    desc: "Run benchmarks  (task bench -- 0001-two-sum)"
     vars:
       PKG: '{{.PKG | default .CLI_ARGS}}'
     preconditions:
       - sh: '[ -n "{{.PKG}}" ]'
-        msg: "Usage: task bench -- 1-two-sum"
+        msg: "Usage: task bench -- 0001-two-sum"
     cmds:
       - go test -bench=. -benchmem ./problems/{{.PKG}}
 
@@ -41,6 +41,12 @@ tasks:
     desc: "Scaffold a new problem  (task new -- 42-trapping-rain-water)"
     vars:
       PKG: '{{.PKG | default .CLI_ARGS}}'
+      PKG_PADDED:
+        sh: |
+          raw='{{.PKG | default .CLI_ARGS}}'
+          num="${raw%%-*}"
+          slug="${raw#*-}"
+          printf "%04d-%s" "$num" "$slug"
       PKG_NAME:
         sh: echo '{{.PKG | default .CLI_ARGS}}' | sed 's/^[0-9]*-//' | tr -d '-'
       SLUG:
@@ -49,12 +55,12 @@ tasks:
       - sh: '[ -n "{{.PKG}}" ]'
         msg: "Usage: task new -- 42-trapping-rain-water"
     cmds:
-      - mkdir -p problems/{{.PKG}}
-      - cp problems/template/solution.go problems/{{.PKG}}/solution.go
-      - cp problems/template/solution_test.go problems/{{.PKG}}/solution_test.go
+      - mkdir -p problems/{{.PKG_PADDED}}
+      - cp problems/template/solution.go problems/{{.PKG_PADDED}}/solution.go
+      - cp problems/template/solution_test.go problems/{{.PKG_PADDED}}/solution_test.go
       - |
-        sed -i '' '/^\/\/go:build ignore$/{N;/\n$/d;}; s|package template|package {{.PKG_NAME}}|; s|{url}|https://leetcode.com/problems/{{.SLUG}}/description/|' problems/{{.PKG}}/solution.go
+        sed -i '' '/^\/\/go:build ignore$/{N;/\n$/d;}; s|package template|package {{.PKG_NAME}}|; s|{url}|https://leetcode.com/problems/{{.SLUG}}/description/|' problems/{{.PKG_PADDED}}/solution.go
       - |
-        sed -i '' '/^\/\/go:build ignore$/{N;/\n$/d;}; s|package template|package {{.PKG_NAME}}|' problems/{{.PKG}}/solution_test.go
-      - "printf 'Created: problems/{{.PKG}}/\\n'"
-      - "printf 'Run: task run-v -- {{.PKG}}\\n'"
+        sed -i '' '/^\/\/go:build ignore$/{N;/\n$/d;}; s|package template|package {{.PKG_NAME}}|' problems/{{.PKG_PADDED}}/solution_test.go
+      - "printf 'Created: problems/{{.PKG_PADDED}}/\\n'"
+      - "printf 'Run: task run-v -- {{.PKG_PADDED}}\\n'"
