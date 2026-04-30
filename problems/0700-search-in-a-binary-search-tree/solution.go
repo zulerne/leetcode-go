@@ -18,3 +18,20 @@ func searchBST(root *TreeNode, val int) *TreeNode {
 	}
 	return root
 }
+
+func searchBSTIterative(root *TreeNode, val int) *TreeNode {
+	if root == nil {
+		return nil
+	}
+	cur := root
+	for cur != nil {
+		if val < cur.Val {
+			cur = cur.Left
+		} else if val > cur.Val {
+			cur = cur.Right
+		} else {
+			return cur
+		}
+	}
+	return cur
+}
