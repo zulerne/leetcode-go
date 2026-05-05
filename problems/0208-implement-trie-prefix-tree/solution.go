@@ -23,14 +23,12 @@ func (this *Trie) Insert(word string) {
 	for i := range len(word) {
 		letter := word[i]
 		child := cur.children[letter-'a']
-		if child != nil {
-			cur = child
-			continue
+		if child == nil {
+			child = &Node{
+				children: [26]*Node{},
+			}
+			cur.children[letter-'a'] = child
 		}
-		child = &Node{
-			children: [26]*Node{},
-		}
-		cur.children[letter-'a'] = child
 		cur = child
 	}
 	cur.isTerminal = true
