@@ -7,7 +7,7 @@ package maxofsumpairs
 // Explanation: Starting with nums = [1,2,3,4]:
 // - Remove numbers 1 and 4, then nums = [2,3]
 // - Remove numbers 2 and 3, then nums = []
-// todo: Update
+// TODO: Update
 func maxOperations(nums []int, k int) int {
 	op := 0
 
