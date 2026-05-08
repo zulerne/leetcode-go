@@ -10,14 +10,14 @@ type Interval struct {
 	Start, End int
 }
 
-type MinHeap []*Interval
+type MinHeap []int
 
 func (h MinHeap) Len() int {
 	return len(h)
 }
 
 func (h MinHeap) Less(i, j int) bool {
-	return h[i].End < h[j].End
+	return h[i] < h[j]
 }
 
 func (h MinHeap) Swap(i, j int) {
@@ -25,7 +25,7 @@ func (h MinHeap) Swap(i, j int) {
 }
 
 func (h *MinHeap) Push(x any) {
-	*h = append(*h, x.(*Interval))
+	*h = append(*h, x.(int))
 }
 
 func (h *MinHeap) Pop() any {
@@ -44,10 +44,10 @@ func MinMeetingRooms(intervals []*Interval) int {
 	heap.Init(&h)
 
 	for _, iv := range intervals {
-		if h.Len() > 0 && h[0].End <= iv.Start {
+		if h.Len() > 0 && h[0] <= iv.Start {
 			heap.Pop(&h)
 		}
-		heap.Push(&h, iv)
+		heap.Push(&h, iv.End)
 	}
 
 	return h.Len()
