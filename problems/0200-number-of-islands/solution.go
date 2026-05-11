@@ -4,6 +4,9 @@ package numberofislands
 func numIslands(grid [][]byte) int {
 	var islands int
 	dirs := [][2]int{{0, 1}, {0, -1}, {1, 0}, {-1, 0}}
+	isValidLand := func(i, j int) bool {
+		return i >= 0 && i < len(grid) && j >= 0 && j < len(grid[i]) && grid[i][j] == '1'
+	}
 
 	for i := range grid {
 		for j := range grid[i] {
@@ -21,7 +24,7 @@ func numIslands(grid [][]byte) int {
 
 				for _, d := range dirs {
 					ni, nj := ii+d[0], jj+d[1]
-					if ni >= 0 && ni < len(grid) && nj >= 0 && nj < len(grid[ni]) && grid[ni][nj] == '1' {
+					if isValidLand(ni, nj) {
 						grid[ni][nj] = '0'
 						queue = append(queue, [2]int{ni, nj})
 					}
