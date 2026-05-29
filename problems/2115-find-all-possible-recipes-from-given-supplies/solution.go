@@ -7,9 +7,9 @@ func findAllRecipes(recipes []string, ingredients [][]string, supplies []string)
 	g := make(map[string][]string, len(supplies)+len(recipes))
 
 	for i, r := range recipes {
+		inDegree[r] = len(ingredients[i])
 		for _, ing := range ingredients[i] {
 			g[ing] = append(g[ing], r)
-			inDegree[r]++
 		}
 	}
 
