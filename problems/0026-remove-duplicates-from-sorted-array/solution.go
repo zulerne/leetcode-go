@@ -4,7 +4,7 @@ package removeduplicatesfromsortedarray
 
 func removeDuplicates(nums []int) int {
 	j := 0
-	for i := 0; i < len(nums); i++ {
+	for i := range nums {
 		if nums[i] != nums[j] {
 			j++
 			nums[j] = nums[i]

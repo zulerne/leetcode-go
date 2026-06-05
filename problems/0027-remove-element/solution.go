@@ -2,14 +2,14 @@
 package removeelement
 
 func removeElement(nums []int, val int) int {
-	first, second := 0, 0
+	i, j := 0, 0
 
-	for ; first < len(nums); first++ {
-		if nums[first] != val {
-			nums[second] = nums[first]
-			second++
+	for ; i < len(nums); i++ {
+		if nums[i] != val {
+			nums[j] = nums[i]
+			j++
 		}
 	}
 
-	return second
+	return j
 }
