@@ -2,6 +2,8 @@ package mergesortedarray
 
 import (
 	"testing"
+
+	_ "github.com/zulerne/leetcode-go/kit"
 )
 
 func Test(t *testing.T) {

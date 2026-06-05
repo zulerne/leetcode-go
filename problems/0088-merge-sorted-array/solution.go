@@ -2,21 +2,20 @@
 package mergesortedarray
 
 func merge(nums1 []int, m int, nums2 []int, n int) {
-	k, l, r := len(nums1)-1, m-1, n-1
+	l, r, i := m-1, n-1, len(nums1)-1
 
-	for ; l >= 0 && r >= 0; k-- {
+	for ; i >= 0 && l >= 0 && r >= 0; i-- {
 		if nums1[l] > nums2[r] {
-			nums1[k] = nums1[l]
+			nums1[i] = nums1[l]
 			l--
 		} else {
-			nums1[k] = nums2[r]
+			nums1[i] = nums2[r]
 			r--
 		}
 	}
 
-	if r >= 0 {
-		for ; k >= 0; k, r = k-1, r-1 {
-			nums1[k] = nums2[r]
-		}
+	for ; r >= 0; r-- {
+		nums1[i] = nums2[r]
+		i--
 	}
 }
