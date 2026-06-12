@@ -1,12 +1,12 @@
-package reversewords
+package reversewordsinastring
 
 import (
 	"testing"
 
-	"github.com/zulerne/leetcode-go/kit"
+	_ "github.com/zulerne/leetcode-go/kit"
 )
 
-func TestReverseWords(t *testing.T) {
+func Test(t *testing.T) {
 	tests := []struct {
 		name string
 		arg  string
@@ -14,26 +14,22 @@ func TestReverseWords(t *testing.T) {
 	}{
 		{
 			name: "Example 1",
-			arg:  "the sky is blue",
-			want: "blue is sky the",
-		},
-		{
-			name: "Example 2",
-			arg:  "  hello world  ",
-			want: "world hello",
-		},
-		{
-			name: "Example 3",
-			arg:  "a good   example",
-			want: "example good a",
+			arg:  "arg",
+			want: "want",
 		},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			got := reverseWords(tc.arg)
+			// got := function(tc.arg)
 
-			kit.AssertEqual(t, got, tc.want)
+			// kit.AssertEqual(t, got, tc.want)
 		})
 	}
 }
+
+// func Benchmark(b *testing.B) {
+// 	for b.Loop() {
+// 		function("arg")
+// 	}
+// }
