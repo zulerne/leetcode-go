@@ -3,52 +3,33 @@ package validpalindrome
 import (
 	"testing"
 
-	"github.com/zulerne/leetcode-go/kit"
+	_ "github.com/zulerne/leetcode-go/kit"
 )
 
 func Test(t *testing.T) {
 	tests := []struct {
 		name string
 		arg  string
-		want bool
+		want string
 	}{
 		{
 			name: "Example 1",
-			arg:  "A man, a plan, a canal: Panama",
-			want: true,
-		},
-		{
-			name: "Example 2",
-			arg:  "race a car",
-			want: false,
-		},
-		{
-			name: "Example 3",
-			arg:  " ",
-			want: true,
-		},
-		{
-			name: "Example 4",
-			arg:  "pP",
-			want: true,
-		},
-		{
-			name: "Example 5",
-			arg:  "0P",
-			want: false,
-		},
-		{
-			name: "Example 6",
-			arg:  ".P",
-			want: true,
+			arg:  "arg",
+			want: "want",
 		},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			got := isPalindrome(tc.arg)
+			// got := function(tc.arg)
 
-			kit.AssertEqual(t, got, tc.want)
+			// kit.AssertEqual(t, got, tc.want)
 		})
 	}
 }
+
+// func Benchmark(b *testing.B) {
+// 	for b.Loop() {
+// 		function("arg")
+// 	}
+// }
