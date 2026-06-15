@@ -2,6 +2,8 @@ package twosumiiinputarrayissorted
 
 import (
 	"testing"
+
+	_ "github.com/zulerne/leetcode-go/kit"
 )
 
 func Test(t *testing.T) {
@@ -25,3 +27,9 @@ func Test(t *testing.T) {
 		})
 	}
 }
+
+// func Benchmark(b *testing.B) {
+// 	for b.Loop() {
+// 		function("arg")
+// 	}
+// }

@@ -2,19 +2,18 @@
 package twosumiiinputarrayissorted
 
 func twoSum(numbers []int, target int) []int {
-	l, r := 0, len(numbers)-1
+	i, j := 0, len(numbers)-1
 
-	for l < r {
-		sum := numbers[l] + numbers[r]
-		if sum == target {
-			return []int{l + 1, r + 1}
-		}
-		if sum > target {
-			r--
+	for i < j {
+		sum := numbers[i] + numbers[j]
+		if sum < target {
+			i++
+		} else if sum > target {
+			j--
 		} else {
-			l++
+			return []int{i + 1, j + 1}
 		}
 	}
 
-	return numbers
+	return []int{}
 }
