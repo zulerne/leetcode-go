@@ -1,42 +1,17 @@
-// Package issubseq
-// https://leetcode.com/problems/is-subsequence
-package issubseq
-
-func isSubsequenceFirst(s string, t string) bool {
-	if len(s) == 0 {
-		return true
-	}
-
-	for i, j := 0, 0; i < len(s) && j < len(t); {
-		cur := s[i]
-
-		for j < len(t) {
-			if t[j] == cur {
-				i++
-				j++
-				break
-			}
-			j++
-		}
-
-		if i == len(s) {
-			return true
-		}
-	}
-
-	return false
-}
+// https://leetcode.com/problems/is-subsequence/description/
+package issubsequence
 
 func isSubsequence(s string, t string) bool {
 	if len(s) == 0 {
 		return true
 	}
+	i, j := 0, 0
 
-	for i, j := 0, 0; i < len(t); i++ {
-		if t[i] == s[j] {
-			j++
+	for ; i < len(s) && j < len(t); j++ {
+		if s[i] == t[j] {
+			i++
 		}
-		if j == len(s) {
+		if i == len(s) {
 			return true
 		}
 	}

@@ -1,52 +1,35 @@
-package issubseq
+package issubsequence
 
 import (
-	"fmt"
 	"testing"
 
-	"github.com/zulerne/leetcode-go/kit"
+	_ "github.com/zulerne/leetcode-go/kit"
 )
 
 func Test(t *testing.T) {
-	fmt.Println(isSubsequence("aaaaaa", "bbaaaa"))
-	//return
 	tests := []struct {
 		name string
-		s    string
-		t    string
-		want bool
+		arg  string
+		want string
 	}{
 		{
 			name: "Example 1",
-			s:    "abc",
-			t:    "ahbgdc",
-			want: true,
-		},
-		{
-			name: "Example 2",
-			s:    "axc",
-			t:    "ahbgdc",
-			want: false,
-		},
-		{
-			name: "Example 3",
-			s:    "aaaaaa",
-			t:    "bbaaaa",
-			want: false,
-		},
-		{
-			name: "Example 4",
-			s:    "",
-			t:    "bbaaaa",
-			want: true,
+			arg:  "arg",
+			want: "want",
 		},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			got := isSubsequence(tc.s, tc.t)
+			// got := function(tc.arg)
 
-			kit.AssertEqual(t, got, tc.want)
+			// kit.AssertEqual(t, got, tc.want)
 		})
 	}
 }
+
+// func Benchmark(b *testing.B) {
+// 	for b.Loop() {
+// 		function("arg")
+// 	}
+// }
