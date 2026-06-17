@@ -1,34 +1,35 @@
-package watercontainer
+package containerwithmostwater
 
 import (
 	"testing"
 
-	"github.com/zulerne/leetcode-go/kit"
+	_ "github.com/zulerne/leetcode-go/kit"
 )
 
 func Test(t *testing.T) {
 	tests := []struct {
-		name   string
-		height []int
-		want   int
+		name string
+		arg  string
+		want string
 	}{
 		{
-			name:   "Example 1",
-			height: []int{1, 8, 6, 2, 5, 4, 8, 3, 7},
-			want:   49,
-		},
-		{
-			name:   "Example 2",
-			height: []int{1, 1},
-			want:   1,
+			name: "Example 1",
+			arg:  "arg",
+			want: "want",
 		},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			got := maxArea(tc.height)
+			// got := function(tc.arg)
 
-			kit.AssertEqual(t, got, tc.want)
+			// kit.AssertEqual(t, got, tc.want)
 		})
 	}
 }
+
+// func Benchmark(b *testing.B) {
+// 	for b.Loop() {
+// 		function("arg")
+// 	}
+// }

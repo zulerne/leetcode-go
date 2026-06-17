@@ -1,47 +1,20 @@
-// Package watercontainer
-// https://leetcode.com/problems/container-with-most-water
-package watercontainer
+// https://leetcode.com/problems/container-with-most-water/description/
+package containerwithmostwater
 
-// O(N^2)
-func maxAreaGreedy(height []int) int {
-	area := 0
-
-	for i := 0; i < len(height)-1; i++ {
-		h1 := height[i]
-
-		for j := i + 1; j < len(height); j++ {
-			h2 := height[j]
-
-			width := j - i
-
-			a := width * min(h1, h2)
-			if a > area {
-				area = a
-			}
-		}
-	}
-
-	return area
-}
-
-// O(N)
 func maxArea(height []int) int {
-	area := 0
+	var res int
+	begin, end := 0, len(height)-1
 
-	for left, right := 0, len(height)-1; left < right; {
-		hLeft, hRight := height[left], height[right]
-		curArea := (right - left) * min(hLeft, hRight)
-
-		if curArea > area {
-			area = curArea
-		}
-
-		if hLeft > hRight {
-			right--
+	for begin < end {
+		width := end - begin
+		if height[begin] > height[end] {
+			res = max(res, height[end]*width)
+			end--
 		} else {
-			left++
+			res = max(res, height[begin]*width)
+			begin++
 		}
 	}
 
-	return area
+	return res
 }
