@@ -1,28 +1,22 @@
 // https://leetcode.com/problems/minimum-size-subarray-sum/description/
 package minimumsizesubarraysum
 
-import (
-	"math"
-)
-
 func minSubArrayLen(target int, nums []int) int {
-	minLength := math.MaxInt
+	n := len(nums)
+	res := n + 1
+	var begin, sum int
 
-	var sum int
-	var beg int
-	for end := range nums {
+	for end := range n {
 		sum += nums[end]
-
 		for sum >= target {
-			length := end - beg + 1
-			minLength = min(minLength, length)
-			sum -= nums[beg]
-			beg++
+			res = min(res, end-begin+1)
+			sum -= nums[begin]
+			begin++
 		}
 	}
 
-	if minLength == math.MaxInt {
+	if res == n+1 {
 		return 0
 	}
-	return minLength
+	return res
 }

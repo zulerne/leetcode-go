@@ -2,44 +2,42 @@
 package threesum
 
 import (
-	"sort"
+	"slices"
 )
 
 func threeSum(nums []int) [][]int {
-	length := len(nums)
+	var res [][]int
+	n := len(nums)
 
-	sort.Ints(nums)
-	result := make([][]int, 0)
+	slices.Sort(nums)
 
 	for i, v := range nums {
 		target := -v
 
-		if i > 0 && nums[i] == nums[i-1] {
+		if i > 0 && nums[i-1] == v {
 			continue
 		}
 
-		for l, r := i+1, length-1; l < r; {
-			sum := nums[l] + nums[r]
+		for j, k := i+1, n-1; j < k; {
+			sum := nums[j] + nums[k]
 			if sum < target {
-				l++
-				continue
+				j++
 			} else if sum > target {
-				r--
-				continue
+				k--
 			} else {
-				s := []int{v, nums[l], nums[r]}
-				result = append(result, s)
-				l, r = l+1, r-1
+				res = append(res, []int{nums[i], nums[j], nums[k]})
+				j++
+				k--
 
-				for l < r && nums[l] == nums[l-1] {
-					l++
+				for j < k && nums[j] == nums[j+1] {
+					j++
 				}
-				for r > l && nums[r] == nums[r+1] {
-					r--
+				for j < k && nums[k] == nums[k-1] {
+					k--
 				}
 			}
 		}
 	}
 
-	return result
+	return res
 }
