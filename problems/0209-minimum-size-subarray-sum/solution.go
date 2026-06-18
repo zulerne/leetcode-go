@@ -8,10 +8,9 @@ func minSubArrayLen(target int, nums []int) int {
 
 	for end := range n {
 		sum += nums[end]
-		for sum >= target {
+		for ; sum >= target; begin++ {
 			res = min(res, end-begin+1)
 			sum -= nums[begin]
-			begin++
 		}
 	}
 
