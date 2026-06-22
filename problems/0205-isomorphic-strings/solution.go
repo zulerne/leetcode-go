@@ -2,16 +2,22 @@
 package isomorphicstrings
 
 func isIsomorphic(s string, t string) bool {
-	sMap, tMap := make(map[byte]byte), make(map[byte]byte)
-	for i := range len(s) {
-		sc, tc := s[i], t[i]
-		if v, ok := sMap[sc]; ok && v != tc {
+	n := len(s)
+	smap := [256]byte{}
+	tmap := [256]byte{}
+
+	for i := range n {
+		sChar, tChar := s[i], t[i]
+
+		if smap[sChar] != 0 && smap[sChar] != tChar {
 			return false
 		}
-		if v, ok := tMap[tc]; ok && v != sc {
+		if tmap[tChar] != 0 && tmap[tChar] != sChar {
 			return false
 		}
-		sMap[sc], tMap[tc] = tc, sc
+
+		smap[sChar], tmap[tChar] = tChar, sChar
 	}
+
 	return true
 }
