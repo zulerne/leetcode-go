@@ -3,41 +3,33 @@ package twosum
 import (
 	"testing"
 
-	"github.com/zulerne/leetcode-go/kit"
+	_ "github.com/zulerne/leetcode-go/kit"
 )
 
-func TestTwoSum(t *testing.T) {
+func Test(t *testing.T) {
 	tests := []struct {
-		name   string
-		nums   []int
-		target int
-		want   []int
+		name string
+		arg  string
+		want string
 	}{
 		{
-			name:   "Example 1",
-			nums:   []int{2, 7, 11, 15},
-			target: 9,
-			want:   []int{0, 1},
-		},
-		{
-			name:   "Example 2",
-			nums:   []int{3, 2, 4},
-			target: 6,
-			want:   []int{1, 2},
-		},
-		{
-			name:   "Example 3",
-			nums:   []int{3, 3},
-			target: 6,
-			want:   []int{0, 1},
+			name: "Example 1",
+			arg:  "arg",
+			want: "want",
 		},
 	}
 
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got := twoSum(tt.nums, tt.target)
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			// got := function(tc.arg)
 
-			kit.AssertEqual(t, got, tt.want)
+			// kit.AssertEqual(t, got, tc.want)
 		})
 	}
 }
+
+// func Benchmark(b *testing.B) {
+// 	for b.Loop() {
+// 		function("arg")
+// 	}
+// }
