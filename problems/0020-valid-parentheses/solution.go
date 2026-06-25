@@ -2,22 +2,22 @@
 package validparentheses
 
 func isValid(s string) bool {
-	pairs := map[byte]byte{')': '(', ']': '[', '}': '{'}
-	var stack []byte
+	m := map[byte]byte{')': '(', ']': '[', '}': '{'}
+	stack := make([]byte, 0, len(s))
 
 	for i := range s {
 		switch b := s[i]; b {
 		case '(', '[', '{':
 			stack = append(stack, b)
 		case ')', ']', '}':
-			lastIdx := len(stack) - 1
-			if lastIdx < 0 {
+			if len(stack) == 0 {
 				return false
 			}
-			if pairs[b] != stack[lastIdx] {
+			last := stack[len(stack)-1]
+			if m[b] != last {
 				return false
 			}
-			stack = stack[:lastIdx]
+			stack = stack[:len(stack)-1]
 		}
 	}
 
