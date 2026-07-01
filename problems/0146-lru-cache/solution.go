@@ -1,13 +1,6 @@
 // https://leetcode.com/problems/lru-cache/description/
 package lrucache
 
-type Node struct {
-	Key   int
-	Value int
-	Next  *Node
-	Prev  *Node
-}
-
 type LRUCache struct {
 	Capacity int
 	Nodes    map[int]*Node
@@ -15,12 +8,19 @@ type LRUCache struct {
 	Tail     *Node
 }
 
+type Node struct {
+	Key   int
+	Value int
+	Next  *Node
+	Prev  *Node
+}
+
 func Constructor(capacity int) LRUCache {
-	nodes := make(map[int]*Node, capacity)
 	head := &Node{}
 	tail := &Node{}
 	head.Next = tail
 	tail.Prev = head
+	nodes := make(map[int]*Node, capacity)
 
 	return LRUCache{
 		Capacity: capacity,
@@ -30,35 +30,38 @@ func Constructor(capacity int) LRUCache {
 	}
 }
 
+func (this *LRUCache) addToHead(node *Node) {
+	node.Prev = this.Head
+	node.Next = this.Head.Next
+	this.Head.Next.Prev = node
+	this.Head.Next = node
+}
+
 func (this *LRUCache) remove(node *Node) {
 	node.Prev.Next = node.Next
 	node.Next.Prev = node.Prev
 }
 
-func (this *LRUCache) addToHead(node *Node) {
-	node.Next = this.Head.Next
-	node.Prev = this.Head
-	this.Head.Next.Prev = node
-	this.Head.Next = node
-}
-
 func (this *LRUCache) Get(key int) int {
 	node, ok := this.Nodes[key]
+
 	if !ok {
 		return -1
 	}
 
 	this.remove(node)
 	this.addToHead(node)
+
 	return node.Value
 }
 
 func (this *LRUCache) Put(key int, value int) {
 	node, ok := this.Nodes[key]
+
 	if ok {
+		node.Value = value
 		this.remove(node)
 		this.addToHead(node)
-		node.Value = value
 		return
 	}
 
@@ -66,6 +69,7 @@ func (this *LRUCache) Put(key int, value int) {
 		delete(this.Nodes, this.Tail.Prev.Key)
 		this.remove(this.Tail.Prev)
 	}
+
 	node = &Node{Key: key, Value: value}
 	this.Nodes[key] = node
 	this.addToHead(node)
