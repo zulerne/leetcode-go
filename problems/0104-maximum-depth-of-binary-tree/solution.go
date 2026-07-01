@@ -7,31 +7,41 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
-func maxDepth(root *TreeNode) int {
-	if root == nil {
-		return 0
-	}
-	return max(maxDepth(root.Left), maxDepth(root.Right)) + 1
-}
-
-type stackElem struct {
+type nodeDepth struct {
 	node  *TreeNode
 	depth int
 }
 
-func maxDepthIterative(root *TreeNode) int {
-	var result int
-	stack := []stackElem{{node: root, depth: 1}}
-	for len(stack) > 0 {
-		elem := stack[len(stack)-1]
-		stack = stack[:len(stack)-1]
-		node, depth := elem.node, elem.depth
-		if node == nil {
-			continue
-		}
-		stack = append(stack, stackElem{node: node.Left, depth: depth + 1})
-		stack = append(stack, stackElem{node: node.Right, depth: depth + 1})
-		result = max(result, depth)
+func maxDepth(root *TreeNode) int {
+	if root == nil {
+		return 0
 	}
-	return result
+
+	var res int
+	stack := []nodeDepth{{node: root, depth: 1}}
+
+	for len(stack) > 0 {
+		nd := stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		node, depth := nd.node, nd.depth
+
+		res = max(res, depth)
+
+		if node.Left != nil {
+			stack = append(stack, nodeDepth{node: node.Left, depth: depth + 1})
+		}
+		if node.Right != nil {
+			stack = append(stack, nodeDepth{node: node.Right, depth: depth + 1})
+		}
+	}
+
+	return res
+}
+
+func maxDepthRecursive(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+
+	return max(maxDepth(root.Left), maxDepth(root.Right)) + 1
 }
