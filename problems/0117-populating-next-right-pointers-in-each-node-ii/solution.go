@@ -14,13 +14,15 @@ func connect(root *Node) *Node {
 	}
 
 	queue := []*Node{root}
+
 	for len(queue) > 0 {
-		levelSize := len(queue)
-		for i := range levelSize {
+		lvlSize := len(queue)
+
+		for i := range lvlSize {
 			node := queue[0]
 			queue = queue[1:]
 
-			if i < levelSize-1 {
+			if i < lvlSize-1 {
 				node.Next = queue[0]
 			}
 			if node.Left != nil {
@@ -30,6 +32,35 @@ func connect(root *Node) *Node {
 				queue = append(queue, node.Right)
 			}
 		}
+	}
+
+	return root
+}
+
+func connectMemory(root *Node) *Node {
+	if root == nil {
+		return nil
+	}
+
+	parent := root
+
+	for parent != nil {
+		dummy := &Node{}
+		tail := dummy
+
+		for parent != nil {
+			if parent.Left != nil {
+				tail.Next = parent.Left
+				tail = tail.Next
+			}
+			if parent.Right != nil {
+				tail.Next = parent.Right
+				tail = tail.Next
+			}
+			parent = parent.Next
+		}
+
+		parent = dummy.Next
 	}
 
 	return root
