@@ -9,36 +9,40 @@ type TreeNode struct {
 
 func zigzagLevelOrder(root *TreeNode) [][]int {
 	if root == nil {
-		return [][]int{}
+		return nil
 	}
 
-	levels := make([][]int, 0)
+	var res [][]int
+	var reverse bool
+
 	queue := []*TreeNode{root}
-	reverse := false
 
 	for len(queue) > 0 {
-		levelSize := len(queue)
-		level := make([]int, levelSize)
+		lvlSize := len(queue)
+		lvl := make([]int, lvlSize)
 
-		for i := range levelSize {
+		for i := range lvlSize {
 			node := queue[0]
 			queue = queue[1:]
 
 			if reverse {
-				level[levelSize-1-i] = node.Val
+				lvl[lvlSize-1-i] = node.Val
 			} else {
-				level[i] = node.Val
+				lvl[i] = node.Val
 			}
 
 			if node.Left != nil {
 				queue = append(queue, node.Left)
 			}
+
 			if node.Right != nil {
 				queue = append(queue, node.Right)
 			}
 		}
-		levels = append(levels, level)
+
+		res = append(res, lvl)
 		reverse = !reverse
 	}
-	return levels
+
+	return res
 }
