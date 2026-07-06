@@ -9,30 +9,32 @@ type TreeNode struct {
 
 func rightSideView(root *TreeNode) []int {
 	if root == nil {
-		return []int{}
+		return nil
 	}
 
-	result := make([]int, 0)
+	var res []int
+
 	queue := []*TreeNode{root}
 
 	for len(queue) > 0 {
-		levelSize := len(queue)
+		lvlSize := len(queue)
 
-		for i := range levelSize {
+		for i := range lvlSize {
 			node := queue[0]
 			queue = queue[1:]
 
-			if i == levelSize-1 {
-				result = append(result, node.Val)
+			if i == lvlSize-1 {
+				res = append(res, node.Val)
 			}
 			if node.Left != nil {
 				queue = append(queue, node.Left)
 			}
+
 			if node.Right != nil {
 				queue = append(queue, node.Right)
 			}
 		}
 	}
 
-	return result
+	return res
 }
