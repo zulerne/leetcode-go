@@ -10,22 +10,26 @@ func cloneGraph(node *Node) *Node {
 	if node == nil {
 		return nil
 	}
-	graph := make(map[*Node]*Node)
-	graph[node] = &Node{Val: node.Val}
+
+	nodes := make(map[*Node]*Node)
 	queue := []*Node{node}
 
+	nodes[node] = &Node{Val: node.Val}
+
 	for len(queue) > 0 {
-		oldN := queue[0]
+		n := queue[0]
 		queue = queue[1:]
 
-		for _, neigh := range oldN.Neighbors {
-			if _, ok := graph[neigh]; !ok {
-				graph[neigh] = &Node{Val: neigh.Val}
+		for _, neigh := range n.Neighbors {
+			_, ok := nodes[neigh]
+			if !ok {
+				nodes[neigh] = &Node{Val: neigh.Val}
 				queue = append(queue, neigh)
 			}
-			graph[oldN].Neighbors = append(graph[oldN].Neighbors, graph[neigh])
+
+			nodes[n].Neighbors = append(nodes[n].Neighbors, nodes[neigh])
 		}
 	}
 
-	return graph[node]
+	return nodes[node]
 }
