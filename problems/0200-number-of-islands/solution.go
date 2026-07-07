@@ -2,29 +2,28 @@
 package numberofislands
 
 func numIslands(grid [][]byte) int {
-	var islands int
-	dirs := [][2]int{{0, 1}, {0, -1}, {1, 0}, {-1, 0}}
-	isValidLand := func(i, j int) bool {
-		return i >= 0 && i < len(grid) && j >= 0 && j < len(grid[i]) && grid[i][j] == '1'
-	}
+	var res int
+	n, m := len(grid), len(grid[0])
+	dirs := [][2]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}
 
-	for i := range grid {
-		for j := range grid[i] {
+	for i := range n {
+		for j := range m {
 			if grid[i][j] == '0' {
 				continue
 			}
 
-			islands++
-
+			res++
+			grid[i][j] = '0'
 			queue := [][2]int{{i, j}}
-			for len(queue) > 0 {
-				ii, jj := queue[0][0], queue[0][1]
-				queue = queue[1:]
-				grid[ii][jj] = '0'
 
-				for _, d := range dirs {
-					ni, nj := ii+d[0], jj+d[1]
-					if isValidLand(ni, nj) {
+			for len(queue) > 0 {
+				curI, curJ := queue[0][0], queue[0][1]
+				queue = queue[1:]
+
+				for _, dir := range dirs {
+					ni, nj := curI+dir[0], curJ+dir[1]
+
+					if ni >= 0 && ni < n && nj >= 0 && nj < m && grid[ni][nj] == '1' {
 						grid[ni][nj] = '0'
 						queue = append(queue, [2]int{ni, nj})
 					}
@@ -33,5 +32,39 @@ func numIslands(grid [][]byte) int {
 		}
 	}
 
-	return islands
+	return res
+}
+
+func numIslandsDfs(grid [][]byte) int {
+	if len(grid) == 0 {
+		return 0
+	}
+
+	n, m := len(grid), len(grid[0])
+	res := 0
+
+	var dfs func(i, j int)
+	dfs = func(i, j int) {
+		if i < 0 || i >= n || j < 0 || j >= m || grid[i][j] == '0' {
+			return
+		}
+
+		grid[i][j] = '0'
+
+		dfs(i+1, j)
+		dfs(i-1, j)
+		dfs(i, j+1)
+		dfs(i, j-1)
+	}
+
+	for i := range n {
+		for j := range m {
+			if grid[i][j] == '1' {
+				res++
+				dfs(i, j)
+			}
+		}
+	}
+
+	return res
 }
