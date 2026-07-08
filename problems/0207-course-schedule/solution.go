@@ -4,11 +4,11 @@ package courseschedule
 func canFinish(numCourses int, prerequisites [][]int) bool {
 	var finished int
 	inDegree := make([]int, numCourses)
-	g := make([][]int, numCourses)
+	graph := make([][]int, numCourses)
 
 	for _, p := range prerequisites {
-		g[p[1]] = append(g[p[1]], p[0])
 		inDegree[p[0]]++
+		graph[p[1]] = append(graph[p[1]], p[0])
 	}
 
 	queue := []int{}
@@ -23,7 +23,7 @@ func canFinish(numCourses int, prerequisites [][]int) bool {
 		node := queue[0]
 		queue = queue[1:]
 
-		for _, ngh := range g[node] {
+		for _, ngh := range graph[node] {
 			inDegree[ngh]--
 			if inDegree[ngh] == 0 {
 				queue = append(queue, ngh)
