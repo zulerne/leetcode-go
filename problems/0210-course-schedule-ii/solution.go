@@ -2,22 +2,21 @@
 package coursescheduleii
 
 func findOrder(numCourses int, prerequisites [][]int) []int {
-	var res []int
-	var finished int
-	graph := make([][]int, numCourses)
+	res := make([]int, 0, numCourses)
 	inDegree := make([]int, numCourses)
+	graph := make([][]int, numCourses)
 
 	for _, p := range prerequisites {
-		graph[p[1]] = append(graph[p[1]], p[0])
 		inDegree[p[0]]++
+		graph[p[1]] = append(graph[p[1]], p[0])
 	}
 
-	var queue []int
-	for c := range numCourses {
-		if inDegree[c] == 0 {
-			queue = append(queue, c)
-			res = append(res, c)
-			finished++
+	queue := []int{}
+
+	for node, val := range inDegree {
+		if val == 0 {
+			queue = append(queue, node)
+			res = append(res, node)
 		}
 	}
 
@@ -27,16 +26,14 @@ func findOrder(numCourses int, prerequisites [][]int) []int {
 
 		for _, ngh := range graph[node] {
 			inDegree[ngh]--
-
 			if inDegree[ngh] == 0 {
 				queue = append(queue, ngh)
 				res = append(res, ngh)
-				finished++
 			}
 		}
 	}
 
-	if finished != numCourses {
+	if len(res) != numCourses {
 		return []int{}
 	}
 	return res
