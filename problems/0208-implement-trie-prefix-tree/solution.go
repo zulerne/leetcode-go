@@ -2,8 +2,9 @@
 package implementtrieprefixtree
 
 type Node struct {
-	children   [26]*Node
-	isTerminal bool
+	Val      byte
+	End      bool
+	children [26]*Node
 }
 
 type Trie struct {
@@ -20,47 +21,39 @@ func Constructor() Trie {
 
 func (this *Trie) Insert(word string) {
 	cur := this.root
-	for i := range len(word) {
-		letter := word[i]
-		child := cur.children[letter-'a']
+
+	for i := range word {
+		key := word[i] - 'a'
+		child := cur.children[key]
 		if child == nil {
-			child = &Node{
-				children: [26]*Node{},
-			}
-			cur.children[letter-'a'] = child
+			child = &Node{Val: word[i], children: [26]*Node{}}
+			cur.children[key] = child
 		}
 		cur = child
 	}
-	cur.isTerminal = true
+
+	cur.End = true
+}
+
+func (this *Trie) traverse(word string) (*Node, bool) {
+	cur := this.root
+	for i := range word {
+		child := cur.children[word[i]-'a']
+		if child == nil {
+			return nil, false
+		}
+		cur = child
+	}
+
+	return cur, true
 }
 
 func (this *Trie) Search(word string) bool {
 	node, ok := this.traverse(word)
-	return ok && node.isTerminal
+	return ok && node.End
 }
 
 func (this *Trie) StartsWith(prefix string) bool {
 	_, ok := this.traverse(prefix)
 	return ok
 }
-
-func (this *Trie) traverse(word string) (*Node, bool) {
-	cur := this.root
-	for i := range len(word) {
-		letter := word[i]
-		child := cur.children[letter-'a']
-		if child == nil {
-			return nil, false
-		}
-		cur = child
-	}
-	return cur, true
-}
-
-/**
- * Your Trie object will be instantiated and called as such:
- * obj := Constructor();
- * obj.Insert(word);
- * param_2 := obj.Search(word);
- * param_3 := obj.StartsWith(prefix);
- */
