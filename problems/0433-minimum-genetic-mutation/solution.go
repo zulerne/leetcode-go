@@ -3,54 +3,50 @@ package minimumgeneticmutation
 
 func minMutation(startGene string, endGene string, bank []string) int {
 	var res int
+	mutations := []byte{'A', 'C', 'G', 'T'}
+
+	bankMap := make(map[string]bool, len(bank))
+	for _, gene := range bank {
+		bankMap[gene] = true
+	}
 
 	seen := make(map[string]bool)
 	seen[startGene] = true
 
-	bankMap := make(map[string]bool)
-	for _, g := range bank {
-		bankMap[g] = true
-	}
-
-	gens := []byte{'A', 'C', 'G', 'T'}
-	neighs := make([]string, 24)
-	updateNeighs := func(cur string) {
-		k := 0
-		b := []byte(cur)
-
-		for i := range b {
-			for _, gen := range gens {
-				curGen := cur[i]
-				if curGen == gen {
-					continue
-				}
-				b[i] = gen
-				neighs[k] = string(b)
-				k++
-				b[i] = cur[i]
-			}
-		}
-	}
-
 	queue := []string{startGene}
+	geneBytes := make([]byte, 8)
 	for len(queue) > 0 {
-		levelSize := len(queue)
-		for range levelSize {
-			cur := queue[0]
+		lvlSize := len(queue)
+
+		for range lvlSize {
+			gene := queue[0]
 			queue = queue[1:]
 
-			if cur == endGene {
+			if gene == endGene {
 				return res
 			}
 
-			updateNeighs(cur)
-			for _, n := range neighs {
-				if !seen[n] && bankMap[n] {
-					seen[n] = true
-					queue = append(queue, n)
+			copy(geneBytes, gene)
+
+			for i := range geneBytes {
+				for _, b := range mutations {
+					if gene[i] == b {
+						continue
+					}
+
+					geneBytes[i] = b
+					newGene := string(geneBytes)
+
+					if !seen[newGene] && bankMap[newGene] {
+						seen[newGene] = true
+						queue = append(queue, newGene)
+					}
 				}
+
+				geneBytes[i] = gene[i]
 			}
 		}
+
 		res++
 	}
 
