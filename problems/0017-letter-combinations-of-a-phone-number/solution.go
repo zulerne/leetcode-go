@@ -2,32 +2,41 @@
 package lettercombinationsofaphonenumber
 
 func letterCombinations(digits string) []string {
-	var res []string
+	if len(digits) == 0 {
+		return nil
+	}
 
-	letters := make(map[byte][]byte)
-	letters['2'] = []byte{'a', 'b', 'c'}
-	letters['3'] = []byte{'d', 'e', 'f'}
-	letters['4'] = []byte{'g', 'h', 'i'}
-	letters['5'] = []byte{'j', 'k', 'l'}
-	letters['6'] = []byte{'m', 'n', 'o'}
-	letters['7'] = []byte{'p', 'q', 'r', 's'}
-	letters['8'] = []byte{'t', 'u', 'v'}
-	letters['9'] = []byte{'w', 'x', 'y', 'z'}
+	var letters = [10]string{
+		"",
+		"",
+		"abc",
+		"def",
+		"ghi",
+		"jkl",
+		"mno",
+		"pqrs",
+		"tuv",
+		"wxyz",
+	}
 
-	var backtrack func(acc []byte, cur int)
-	backtrack = func(acc []byte, cur int) {
-		if cur == len(digits) {
-			res = append(res, string(acc))
+	res := make([]string, 0)
+	path := make([]byte, len(digits))
+
+	var backtrack func(pos int)
+	backtrack = func(pos int) {
+		if pos == len(digits) {
+			res = append(res, string(path))
 			return
 		}
-		for _, v := range letters[digits[cur]] {
-			acc = append(acc, v)
-			backtrack(acc, cur+1)
-			acc = acc[:len(acc)-1]
+
+		digitLetters := letters[digits[pos]-'0']
+		for i := range digitLetters {
+			path[pos] = digitLetters[i]
+			backtrack(pos + 1)
 		}
 	}
 
-	backtrack([]byte{}, 0)
+	backtrack(0)
 
 	return res
 }
