@@ -3,28 +3,25 @@ package generateparentheses
 
 func generateParenthesis(n int) []string {
 	var res []string
-	var backtrack func(acc []byte, open, closed int)
+	acc := make([]byte, n*2)
 
-	backtrack = func(acc []byte, open, closed int) {
-		if len(acc) == n*2 {
-			tmp := make([]byte, len(acc))
-			copy(tmp, acc)
-			res = append(res, string(tmp))
+	var backtrack func(pos, open, closed int)
+	backtrack = func(pos, open, closed int) {
+		if pos == n*2 {
+			res = append(res, string(acc))
+			return
 		}
-
 		if open < n {
-			acc = append(acc, '(')
-			backtrack(acc, open+1, closed)
-			acc = acc[:len(acc)-1]
+			acc[pos] = '('
+			backtrack(pos+1, open+1, closed)
 		}
 		if closed < open {
-			acc = append(acc, ')')
-			backtrack(acc, open, closed+1)
-			acc = acc[:len(acc)-1]
+			acc[pos] = ')'
+			backtrack(pos+1, open, closed+1)
 		}
 	}
 
-	backtrack([]byte{}, 0, 0)
+	backtrack(0, 0, 0)
 
 	return res
 }
