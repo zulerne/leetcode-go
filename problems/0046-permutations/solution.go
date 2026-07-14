@@ -1,32 +1,32 @@
 // https://leetcode.com/problems/permutations/description/
 package permutations
 
-import (
-	"slices"
-)
+import "slices"
 
 func permute(nums []int) [][]int {
-	var res [][]int
-	var backtrack func(acc []int)
+	res := make([][]int, 0)
+	seen := make([]bool, len(nums))
+	acc := make([]int, len(nums))
 
-	backtrack = func(acc []int) {
-		if len(acc) == len(nums) {
-			tmp := make([]int, len(acc))
-			copy(tmp, acc)
-			res = append(res, tmp)
+	var backtrack func(pos int)
+	backtrack = func(pos int) {
+		if pos == len(nums) {
+			res = append(res, slices.Clone(acc))
 			return
 		}
 
-		for _, num := range nums {
-			if !slices.Contains(acc, num) {
-				acc = append(acc, num)
-				backtrack(acc)
-				acc = acc[:len(acc)-1]
+		for i := range nums {
+			if seen[i] {
+				continue
 			}
+			acc[pos] = nums[i]
+			seen[i] = true
+			backtrack(pos + 1)
+			seen[i] = false
 		}
 	}
 
-	backtrack([]int{})
+	backtrack(0)
 
 	return res
 }
