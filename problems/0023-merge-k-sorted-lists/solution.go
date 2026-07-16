@@ -35,7 +35,7 @@ func (h *MinHeap) Pop() any {
 	return x
 }
 
-func mergeKLists(lists []*ListNode) *ListNode {
+func mergeKListsHeap(lists []*ListNode) *ListNode {
 	h := &MinHeap{}
 	heap.Init(h)
 
@@ -58,4 +58,43 @@ func mergeKLists(lists []*ListNode) *ListNode {
 	}
 
 	return dummy.Next
+}
+
+func merge(left, right *ListNode) *ListNode {
+	dummy := &ListNode{}
+	tail := dummy
+	for left != nil && right != nil {
+		if left.Val <= right.Val {
+			tail.Next = left
+			left = left.Next
+		} else {
+			tail.Next = right
+			right = right.Next
+		}
+		tail = tail.Next
+	}
+	if left != nil {
+		tail.Next = left
+	}
+	if right != nil {
+		tail.Next = right
+	}
+
+	return dummy.Next
+}
+
+func mergeKLists(lists []*ListNode) *ListNode {
+	if len(lists) == 0 {
+		return nil
+	}
+	if len(lists) == 1 {
+		return lists[0]
+	}
+
+	mid := len(lists) / 2
+
+	left := mergeKLists(lists[:mid])
+	right := mergeKLists(lists[mid:])
+
+	return merge(left, right)
 }
