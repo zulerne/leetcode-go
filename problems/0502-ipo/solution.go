@@ -10,97 +10,93 @@ type Project struct {
 	profit  int
 }
 
-// INFO: MaxProfitHeap
-type MaxProfitHeap []Project
-
-// Less implements [heap.Interface].
-func (h *MaxProfitHeap) Less(i int, j int) bool {
-	hh := *h
-	return hh[i].profit > hh[j].profit
-}
-
-// Pop implements [heap.Interface].
-func (h *MaxProfitHeap) Pop() any {
-	old := *h
-	x := old[len(old)-1]
-	*h = old[:len(old)-1]
-	return x
-}
-
-// Push implements [heap.Interface].
-func (h *MaxProfitHeap) Push(x any) {
-	old := *h
-	*h = append(old, x.(Project))
-}
-
-// Swap implements [heap.Interface].
-func (h *MaxProfitHeap) Swap(i int, j int) {
-	hh := *h
-	hh[i], hh[j] = hh[j], hh[i]
-}
-
-func (h *MaxProfitHeap) Len() int {
-	return len(*h)
-}
-
-// INFO: MinCapitalHeap
 type MinCapitalHeap []Project
 
+// Len implements [heap.Interface].
+func (m *MinCapitalHeap) Len() int {
+	return len(*m)
+}
+
 // Less implements [heap.Interface].
-func (h *MinCapitalHeap) Less(i int, j int) bool {
-	hh := *h
-	return hh[i].capital < hh[j].capital
+func (m *MinCapitalHeap) Less(i int, j int) bool {
+	return (*m)[i].capital < (*m)[j].capital
 }
 
 // Pop implements [heap.Interface].
-func (h *MinCapitalHeap) Pop() any {
-	old := *h
-	x := old[len(old)-1]
-	*h = old[:len(old)-1]
-	return x
+func (m *MinCapitalHeap) Pop() any {
+	old := *m
+	last := old[len(old)-1]
+	*m = old[:len(old)-1]
+	return last
 }
 
 // Push implements [heap.Interface].
-func (h *MinCapitalHeap) Push(x any) {
-	old := *h
-	*h = append(old, x.(Project))
+func (m *MinCapitalHeap) Push(x any) {
+	old := *m
+	*m = append(old, x.(Project))
 }
 
 // Swap implements [heap.Interface].
-func (h *MinCapitalHeap) Swap(i int, j int) {
-	hh := *h
-	hh[i], hh[j] = hh[j], hh[i]
+func (m *MinCapitalHeap) Swap(i int, j int) {
+	(*m)[i], (*m)[j] = (*m)[j], (*m)[i]
 }
 
-func (h *MinCapitalHeap) Len() int {
-	return len(*h)
+type MaxProfitHeap []Project
+
+// Len implements [heap.Interface].
+func (m *MaxProfitHeap) Len() int {
+	return len(*m)
+}
+
+// Less implements [heap.Interface].
+func (m *MaxProfitHeap) Less(i int, j int) bool {
+	return (*m)[i].profit > (*m)[j].profit
+}
+
+// Pop implements [heap.Interface].
+func (m *MaxProfitHeap) Pop() any {
+	old := *m
+	last := old[len(old)-1]
+	*m = old[:len(old)-1]
+	return last
+}
+
+// Push implements [heap.Interface].
+func (m *MaxProfitHeap) Push(x any) {
+	old := *m
+	*m = append(old, x.(Project))
+}
+
+// Swap implements [heap.Interface].
+func (m *MaxProfitHeap) Swap(i int, j int) {
+	(*m)[i], (*m)[j] = (*m)[j], (*m)[i]
 }
 
 func findMaximizedCapital(k int, w int, profits []int, capital []int) int {
-	cap := w
-	profH := MaxProfitHeap{}
-	capH := MinCapitalHeap{}
+	curCapital := w
+	minCapH := MinCapitalHeap{}
+	maxProfH := MaxProfitHeap{}
 
-	heap.Init(&profH)
-	heap.Init(&capH)
+	heap.Init(&minCapH)
+	heap.Init(&maxProfH)
+
 	for i := range profits {
-		project := Project{profit: profits[i], capital: capital[i]}
-		if cap >= project.capital {
-			heap.Push(&profH, project)
-		} else {
-			heap.Push(&capH, project)
-		}
+		heap.Push(&minCapH, Project{
+			profit:  profits[i],
+			capital: capital[i],
+		})
 	}
 
 	for range k {
-		for capH.Len() > 0 && cap >= capH[0].capital {
-			heap.Push(&profH, heap.Pop(&capH))
+		for minCapH.Len() > 0 && curCapital >= minCapH[0].capital {
+			heap.Push(&maxProfH, heap.Pop(&minCapH))
 		}
-		if profH.Len() == 0 {
+		if maxProfH.Len() == 0 {
 			break
 		}
-		cap += heap.Pop(&profH).(Project).profit
+
+		curCapital += heap.Pop(&maxProfH).(Project).profit
 	}
 
-	return cap
+	return curCapital
 }
