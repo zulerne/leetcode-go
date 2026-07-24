@@ -56,11 +56,14 @@ tasks:
         msg: "Usage: task new -- 42-trapping-rain-water"
     cmds:
       - mkdir -p problems/{{.PKG_PADDED}}
-      - cp problems/template/solution.go problems/{{.PKG_PADDED}}/solution.go
-      - cp problems/template/solution_test.go problems/{{.PKG_PADDED}}/solution_test.go
-      - |
-        sed -i '' '/^\/\/go:build ignore$/{N;/\n$/d;}; s|package template|package {{.PKG_NAME}}|; s|{url}|https://leetcode.com/problems/{{.SLUG}}/description/|' problems/{{.PKG_PADDED}}/solution.go
-      - |
-        sed -i '' '/^\/\/go:build ignore$/{N;/\n$/d;}; s|package template|package {{.PKG_NAME}}|' problems/{{.PKG_PADDED}}/solution_test.go
+      - cmd: |
+          if [ "{{.SQL}}" = "1" ]; then
+            cp problems/template/solution.sql problems/{{.PKG_PADDED}}/solution.sql
+            sed -i '' 's|{url}|https://leetcode.com/problems/{{.SLUG}}/description/|' problems/{{.PKG_PADDED}}/solution.sql
+          else
+            cp problems/template/solution.go problems/{{.PKG_PADDED}}/solution.go
+            cp problems/template/solution_test.go problems/{{.PKG_PADDED}}/solution_test.go
+            sed -i '' '/^\/\/go:build ignore$/{N;/\n$/d;}; s|package template|package {{.PKG_NAME}}|; s|{url}|https://leetcode.com/problems/{{.SLUG}}/description/|' problems/{{.PKG_PADDED}}/solution.go
+            sed -i '' '/^\/\/go:build ignore$/{N;/\n$/d;}; s|package template|package {{.PKG_NAME}}|' problems/{{.PKG_PADDED}}/solution_test.go
+          fi
       - "printf 'Created: problems/{{.PKG_PADDED}}/\\n'"
-      - "printf 'Run: task run-v -- {{.PKG_PADDED}}\\n'"
