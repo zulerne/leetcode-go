@@ -67,3 +67,24 @@ tasks:
             sed -i '' '/^\/\/go:build ignore$/{N;/\n$/d;}; s|package template|package {{.PKG_NAME}}|' problems/{{.PKG_PADDED}}/solution_test.go
           fi
       - "printf 'Created: problems/{{.PKG_PADDED}}/\\n'"
+
+  new-sql:
+    desc: "Scaffold a new SQL problem  (task new-sql -- 1757-recyclable-and-low-fat-products)"
+    vars:
+      PKG: '{{.PKG | default .CLI_ARGS}}'
+      PKG_PADDED:
+        sh: |
+          raw='{{.PKG | default .CLI_ARGS}}'
+          num="${raw%%-*}"
+          slug="${raw#*-}"
+          printf "%04d-%s" "$num" "$slug"
+      SLUG:
+        sh: echo '{{.PKG | default .CLI_ARGS}}' | sed 's/^[0-9]*-//'
+    preconditions:
+      - sh: '[ -n "{{.PKG}}" ]'
+        msg: "Usage: task new-sql -- 1757-recyclable-and-low-fat-products"
+    cmds:
+      - mkdir -p problems/{{.PKG_PADDED}}
+      - cp problems/template/solution.sql problems/{{.PKG_PADDED}}/solution.sql
+      - sed -i '' 's|{url}|https://leetcode.com/problems/{{.SLUG}}/description/|' problems/{{.PKG_PADDED}}/solution.sql
+      - "printf 'Created: problems/{{.PKG_PADDED}}/\\n'"
